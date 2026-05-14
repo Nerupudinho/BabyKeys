@@ -1,0 +1,275 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.BabyKeys-arm64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources",
+      "importPath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "BabyKeys",
+      "moduleOutputPath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule",
+      "objects" : [
+        "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o",
+        "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o",
+        "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "BabyKeys_main",
+        "-swift-version",
+        "5",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "babykeys"
+      ],
+      "outputFileMapPath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift",
+        "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift",
+        "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift"
+      ],
+      "tempsPath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "BabyKeys" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "BabyKeys",
+      "-package-name",
+      "babykeys",
+      "-incremental",
+      "-c",
+      "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift",
+      "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift",
+      "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift",
+      "-I",
+      "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "BabyKeys_main",
+      "-swift-version",
+      "5",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "babykeys",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "BabyKeys" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "writeCommands" : {
+    "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist"
+    },
+    "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources"
+    },
+    "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList"
+    },
+    "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}

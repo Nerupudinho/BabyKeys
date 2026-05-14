@@ -1,0 +1,81 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "BabyKeys-arm64-apple-macosx15.0-debug.exe": ["<BabyKeys-arm64-apple-macosx15.0-debug.exe>"]
+  "BabyKeys-arm64-apple-macosx15.0-debug.module": ["<BabyKeys-arm64-apple-macosx15.0-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<BabyKeys-arm64-apple-macosx15.0-debug.exe>","<BabyKeys-arm64-apple-macosx15.0-debug.module>"]
+  "test": ["<BabyKeys-arm64-apple-macosx15.0-debug.exe>","<BabyKeys-arm64-apple-macosx15.0-debug.module>"]
+default: "main"
+nodes:
+  "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys":
+    is-mutated: true
+commands:
+  "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist"]
+    description: "Write auxiliary file /Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist"
+
+  "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift","/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift","/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources"]
+    description: "Write auxiliary file /Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources"
+
+  "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList"
+
+  "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+
+  "<BabyKeys-arm64-apple-macosx15.0-debug.exe>":
+    tool: phony
+    inputs: ["<BabyKeys-arm64-apple-macosx15.0-debug.exe-CodeSigning>"]
+    outputs: ["<BabyKeys-arm64-apple-macosx15.0-debug.exe>"]
+
+  "<BabyKeys-arm64-apple-macosx15.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule"]
+    outputs: ["<BabyKeys-arm64-apple-macosx15.0-debug.module>"]
+
+  "C.BabyKeys-arm64-apple-macosx15.0-debug.exe":
+    tool: shell
+    inputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/BabyKeys"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug","-o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys","-module-name","BabyKeys","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_BabyKeys_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.product/Objects.LinkFileList","-target","arm64-apple-macosx14.0","-Xlinker","-add_ast_path","-Xlinker","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.BabyKeys-arm64-apple-macosx15.0-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist"]
+    outputs: ["<BabyKeys-arm64-apple-macosx15.0-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/BabyKeys"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys-entitlement.plist","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys"]
+
+  "C.BabyKeys-arm64-apple-macosx15.0-debug.module":
+    tool: shell
+    inputs: ["/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift","/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift","/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources"]
+    outputs: ["/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/BabyKeysApp.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ContentView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/ShapeView.swift.o","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule"]
+    description: "Compiling Swift Module 'BabyKeys' (3 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","BabyKeys","-emit-dependencies","-emit-module","-emit-module-path","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules/BabyKeys.swiftmodule","-output-file-map","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/output-file-map.json","-incremental","-c","@/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/BabyKeys.build/sources","-I","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx14.0","-enable-batch-mode","-index-store-path","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j8","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","BabyKeys_main","-swift-version","5","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","babykeys"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/","/Users/nerupudinho/Desktop/BabyKeys/Package.swift","/Users/nerupudinho/Desktop/BabyKeys/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

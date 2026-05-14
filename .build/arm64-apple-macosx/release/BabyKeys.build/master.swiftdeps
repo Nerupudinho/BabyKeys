@@ -1,0 +1,10 @@
+version: "Apple Swift version 6.0 (swiftlang-6.0.0.9.10 clang-1600.0.26.2)"
+options: "5c30f0b90430b07835b03226ffa160dffad1d27e1b2d5caa21e16c2b63c48914"
+build_start_time: [1778761061, 682183000]
+build_end_time: [1778761064, 497277000]
+inputs:
+  ? "/Users/nerupudinho/Desktop/BabyKeys/.build/arm64-apple-macosx/release/BabyKeys.build/DerivedSources/resource_bundle_accessor.swift"
+  : [1778755226, 166301641]
+  "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/BabyKeysApp.swift": [1778760969, 403904446]
+  "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ContentView.swift": [1778401800, 832852790]
+  "/Users/nerupudinho/Desktop/BabyKeys/Sources/BabyKeys/ShapeView.swift": [1778398138, 919522985]
