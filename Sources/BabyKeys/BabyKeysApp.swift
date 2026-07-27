@@ -39,6 +39,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let screen = NSScreen.main ?? NSScreen.screens[0]
             window.setFrame(screen.frame, display: true)
             window.styleMask = [.borderless]
+            window.isOpaque = false
+            window.backgroundColor = .clear
+            window.hasShadow = false
             window.level = .screenSaver
             window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
             window.touchBar = NSTouchBar()

@@ -94,7 +94,7 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color.black
+                Color.clear
                 ForEach(store.shapes) { shape in
                     ShapeView(shape: shape)
                 }
