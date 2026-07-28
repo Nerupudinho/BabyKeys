@@ -94,7 +94,9 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color.clear
+                // Faint veil: the desktop still shows through, but the dimming
+                // makes it obvious the app is running (not a blank/plain desktop).
+                Color.black.opacity(0.15)
                 ForEach(store.shapes) { shape in
                     ShapeView(shape: shape)
                 }
