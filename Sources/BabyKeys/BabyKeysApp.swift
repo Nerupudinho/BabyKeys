@@ -34,20 +34,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .disableForceQuit
         ]
         NSApp.isAutomaticCustomizeTouchBarMenuItemEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            guard let window = NSApp.windows.first else { return }
-            let screen = NSScreen.main ?? NSScreen.screens[0]
-            window.setFrame(screen.frame, display: true)
+        NSApp.activate(ignoringOtherApps: true)
+        lockDownWindows(attempt: 0)
+    }
+
+    /// Wait until SwiftUI has actually created the content window, then lock
+    /// down EVERY window (not just the first). Relying on `NSApp.windows.first`
+    /// at a fixed delay was racy — the window sometimes wasn't ready yet, so the
+    /// app came up as an ordinary window on whatever display instead of the
+    /// fullscreen overlay, making it look like it "didn't open".
+    private func lockDownWindows(attempt: Int) {
+        let windows = NSApp.windows.filter { $0.contentView != nil }
+        if windows.isEmpty && attempt < 40 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.lockDownWindows(attempt: attempt + 1)
+            }
+            return
+        }
+        let screen = NSScreen.main ?? NSScreen.screens[0]
+        for window in windows {
             window.styleMask = [.borderless]
             window.isOpaque = false
             window.backgroundColor = .clear
             window.hasShadow = false
             window.level = .screenSaver
             window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
+            window.setFrame(screen.frame, display: true)
             window.touchBar = NSTouchBar()
-            window.makeKeyAndOrderFront(nil)
-            self.blankTouchBar()
         }
+        (windows.first { $0.canBecomeKey } ?? windows.first)?.makeKeyAndOrderFront(nil)
+        blankTouchBar()
     }
 
     private func blankTouchBar() {
