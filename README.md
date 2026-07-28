@@ -26,7 +26,7 @@ Or open the pre-built `BabyKeys.app` bundle directly.
 
 ## How to exit
 
-Hold **ESC + SPACE** for 1 second to gracefully quit.
+Hold **ESC + SPACE** together for 3 seconds to gracefully quit. The longer hold prevents a baby from exiting by mashing keys.
 
 ## Stack
 

@@ -56,7 +56,7 @@ class ShapeStore: ObservableObject {
 
     private func checkExit() {
         guard heldKeys.contains(escKey), heldKeys.contains(spaceKey), exitTimer == nil else { return }
-        exitTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+        exitTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
             NSApp.presentationOptions = []
             NSApp.terminate(nil)
         }
