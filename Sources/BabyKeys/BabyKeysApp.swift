@@ -25,6 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var modalTouchBar: NSTouchBar?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        let screens = NSScreen.screens.map { "\($0.frame.width)x\($0.frame.height)@(\($0.frame.origin.x),\($0.frame.origin.y))" }
+        BKLog.log("LAUNCH — \(NSScreen.screens.count) screen(s): \(screens.joined(separator: ", "))")
         NSApp.presentationOptions = [
             .hideDock,
             .hideMenuBar,
@@ -36,6 +38,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.isAutomaticCustomizeTouchBarMenuItemEnabled = false
         NSApp.activate(ignoringOtherApps: true)
         lockDownWindows(attempt: 0)
+
+        // Focus loss is the prime suspect for "getting impacted": if the overlay
+        // stops being active, keystrokes no longer spawn shapes and the baby can
+        // reach whatever is behind it. Record every focus transition.
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { _ in
+            BKLog.log("RESIGNED ACTIVE — overlay lost focus (front app: \(NSWorkspace.shared.frontmostApplication?.localizedName ?? "?"))")
+        }
+        nc.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
+            BKLog.log("BECAME ACTIVE — overlay regained focus")
+        }
+        nc.addObserver(forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main) { [weak self] _ in
+            BKLog.log("SCREEN PARAMS CHANGED — re-applying lockdown")
+            self?.lockDownWindows(attempt: 0)
+        }
     }
 
     /// Wait until SwiftUI has actually created the content window, then lock
@@ -51,6 +68,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
             return
         }
+        if windows.isEmpty {
+            BKLog.log("LOCKDOWN FAILED — no content window after \(attempt) attempts")
+            return
+        }
         let screen = NSScreen.main ?? NSScreen.screens[0]
         for window in windows {
             window.styleMask = [.borderless]
@@ -63,6 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             window.touchBar = NSTouchBar()
         }
         (windows.first { $0.canBecomeKey } ?? windows.first)?.makeKeyAndOrderFront(nil)
+        BKLog.log("LOCKDOWN OK — \(windows.count) window(s), frame \(screen.frame.width)x\(screen.frame.height)@(\(screen.frame.origin.x),\(screen.frame.origin.y)), level screenSaver (attempt \(attempt))")
         blankTouchBar()
     }
 
@@ -82,6 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        BKLog.log("TERMINATE — app is quitting")
         guard let bar = modalTouchBar else { return }
         let cls: AnyObject = NSTouchBar.self
         for name in ["dismissSystemModalTouchBar:", "dismissSystemModalFunctionBar:"] {

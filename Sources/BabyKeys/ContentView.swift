@@ -38,6 +38,9 @@ class ShapeStore: ObservableObject {
             case .keyUp:
                 self.heldKeys.remove(event.keyCode)
                 if !(self.heldKeys.contains(self.escKey) && self.heldKeys.contains(self.spaceKey)) {
+                    if self.exitTimer != nil {
+                        BKLog.log("EXIT CHORD canceled — key released before 3s hold completed")
+                    }
                     self.exitTimer?.invalidate()
                     self.exitTimer = nil
                 }
@@ -56,7 +59,9 @@ class ShapeStore: ObservableObject {
 
     private func checkExit() {
         guard heldKeys.contains(escKey), heldKeys.contains(spaceKey), exitTimer == nil else { return }
+        BKLog.log("EXIT CHORD armed — Esc+Space held, 3s countdown started")
         exitTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
+            BKLog.log("EXIT CHORD fired — 3s hold completed, quitting app")
             NSApp.presentationOptions = []
             NSApp.terminate(nil)
         }
