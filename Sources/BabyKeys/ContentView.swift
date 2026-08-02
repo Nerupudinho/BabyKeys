@@ -62,6 +62,7 @@ class ShapeStore: ObservableObject {
         BKLog.log("EXIT CHORD armed — Esc+Space held, 3s countdown started")
         exitTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
             BKLog.log("EXIT CHORD fired — 3s hold completed, quitting app")
+            NotificationCenter.default.post(name: Notification.Name("BabyKeysExiting"), object: nil)
             NSApp.presentationOptions = []
             NSApp.terminate(nil)
         }

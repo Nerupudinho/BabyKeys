@@ -23,6 +23,9 @@ struct BabyKeysApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var modalTouchBar: NSTouchBar?
+    /// Set once the real exit chord fires, so focus-reclaim doesn't fight the
+    /// intentional quit.
+    private var isExiting = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let screens = NSScreen.screens.map { "\($0.frame.width)x\($0.frame.height)@(\($0.frame.origin.x),\($0.frame.origin.y))" }
@@ -43,8 +46,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // stops being active, keystrokes no longer spawn shapes and the baby can
         // reach whatever is behind it. Record every focus transition.
         let nc = NotificationCenter.default
-        nc.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { _ in
-            BKLog.log("RESIGNED ACTIVE — overlay lost focus (front app: \(NSWorkspace.shared.frontmostApplication?.localizedName ?? "?"))")
+        nc.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            let front = NSWorkspace.shared.frontmostApplication?.localizedName ?? "?"
+            BKLog.log("RESIGNED ACTIVE — overlay lost focus (front app: \(front))")
+            self?.reclaimFocus()
         }
         nc.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
             BKLog.log("BECAME ACTIVE — overlay regained focus")
@@ -53,6 +58,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             BKLog.log("SCREEN PARAMS CHANGED — re-applying lockdown")
             self?.lockDownWindows(attempt: 0)
         }
+        // The exit chord (in ShapeStore) posts this right before quitting so we
+        // stop reclaiming focus and let the app terminate.
+        nc.addObserver(forName: Notification.Name("BabyKeysExiting"), object: nil, queue: .main) { [weak self] _ in
+            self?.isExiting = true
+        }
+    }
+
+    /// The overlay lost focus to another app (e.g. Finder) — pull it straight
+    /// back so the child can't escape to the desktop. Skipped once the exit
+    /// chord has fired.
+    private func reclaimFocus() {
+        guard !isExiting else { return }
+        NSApp.activate(ignoringOtherApps: true)
+        if let window = NSApp.windows.first(where: { $0.contentView != nil }) {
+            window.level = .screenSaver
+            window.makeKeyAndOrderFront(nil)
+        }
+        BKLog.log("RECLAIMED focus — re-activated overlay")
     }
 
     /// Wait until SwiftUI has actually created the content window, then lock
@@ -74,7 +97,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         let screen = NSScreen.main ?? NSScreen.screens[0]
         for window in windows {
-            window.styleMask = [.borderless]
+            // Titled + fullSizeContentView (rather than .borderless) so the window
+            // CAN become key and hold keyboard focus — a borderless window can't,
+            // which is why focus kept slipping to Finder. Chrome is hidden so it
+            // still looks/behaves borderless.
+            window.styleMask = [.titled, .fullSizeContentView]
+            window.titleVisibility = .hidden
+            window.titlebarAppearsTransparent = true
+            window.standardWindowButton(.closeButton)?.isHidden = true
+            window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            window.standardWindowButton(.zoomButton)?.isHidden = true
+            window.isMovable = false
             window.isOpaque = false
             window.backgroundColor = .clear
             window.hasShadow = false
@@ -83,8 +116,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             window.setFrame(screen.frame, display: true)
             window.touchBar = NSTouchBar()
         }
-        (windows.first { $0.canBecomeKey } ?? windows.first)?.makeKeyAndOrderFront(nil)
-        BKLog.log("LOCKDOWN OK — \(windows.count) window(s), frame \(screen.frame.width)x\(screen.frame.height)@(\(screen.frame.origin.x),\(screen.frame.origin.y)), level screenSaver (attempt \(attempt))")
+        let keyWindow = windows.first { $0.canBecomeKey } ?? windows.first
+        keyWindow?.makeKeyAndOrderFront(nil)
+        BKLog.log("LOCKDOWN OK — \(windows.count) window(s), frame \(screen.frame.width)x\(screen.frame.height)@(\(screen.frame.origin.x),\(screen.frame.origin.y)), level screenSaver, canBecomeKey=\(keyWindow?.canBecomeKey ?? false), isKey=\(keyWindow?.isKeyWindow ?? false) (attempt \(attempt))")
         blankTouchBar()
     }
 
