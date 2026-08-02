@@ -23,33 +23,52 @@ struct BabyKeysApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var modalTouchBar: NSTouchBar?
-    /// Set once the real exit chord fires, so focus-reclaim doesn't fight the
-    /// intentional quit.
-    private var isExiting = false
+    private var sigtermSource: DispatchSourceSignal?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // SAFETY: never let macOS relaunch this app automatically after a
+        // restart/login. Without this, an app that was running at shutdown comes
+        // back on every boot — which previously locked the user out.
+        NSApp.disableRelaunchOnLogin()
+
+        // SAFETY: guaranteed clean kill switch. `killall BabyKeys` (SIGTERM) now
+        // restores the dock/menu bar and quits cleanly, instead of leaving the
+        // Mac in a locked-down state. This never depends on the exit chord.
+        signal(SIGTERM, SIG_IGN)
+        let source = DispatchSource.makeSignalSource(signal: SIGTERM, queue: .main)
+        source.setEventHandler {
+            BKLog.log("SIGTERM received — clean shutdown")
+            NSApp.presentationOptions = []
+            NSApp.terminate(nil)
+        }
+        source.resume()
+        sigtermSource = source
+
         let screens = NSScreen.screens.map { "\($0.frame.width)x\($0.frame.height)@(\($0.frame.origin.x),\($0.frame.origin.y))" }
         BKLog.log("LAUNCH — \(NSScreen.screens.count) screen(s): \(screens.joined(separator: ", "))")
+
+        // NOTE: no .disableForceQuit — Cmd+Opt+Esc must always be able to kill
+        // this app. The lockdown must never be able to trap the machine.
         NSApp.presentationOptions = [
             .hideDock,
             .hideMenuBar,
             .disableAppleMenu,
             .disableProcessSwitching,
-            .disableHideApplication,
-            .disableForceQuit
+            .disableHideApplication
         ]
         NSApp.isAutomaticCustomizeTouchBarMenuItemEnabled = false
         NSApp.activate(ignoringOtherApps: true)
         lockDownWindows(attempt: 0)
 
-        // Focus loss is the prime suspect for "getting impacted": if the overlay
-        // stops being active, keystrokes no longer spawn shapes and the baby can
-        // reach whatever is behind it. Record every focus transition.
+        // Log focus transitions for diagnostics only. We deliberately DO NOT
+        // reclaim focus: an earlier version fought every app (including the login
+        // window) for focus, which made the app impossible to exit and could lock
+        // the user out. Losing focus occasionally is acceptable; trapping the
+        // machine is not.
         let nc = NotificationCenter.default
-        nc.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { [weak self] _ in
+        nc.addObserver(forName: NSApplication.didResignActiveNotification, object: nil, queue: .main) { _ in
             let front = NSWorkspace.shared.frontmostApplication?.localizedName ?? "?"
             BKLog.log("RESIGNED ACTIVE — overlay lost focus (front app: \(front))")
-            self?.reclaimFocus()
         }
         nc.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
             BKLog.log("BECAME ACTIVE — overlay regained focus")
@@ -58,24 +77,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             BKLog.log("SCREEN PARAMS CHANGED — re-applying lockdown")
             self?.lockDownWindows(attempt: 0)
         }
-        // The exit chord (in ShapeStore) posts this right before quitting so we
-        // stop reclaiming focus and let the app terminate.
-        nc.addObserver(forName: Notification.Name("BabyKeysExiting"), object: nil, queue: .main) { [weak self] _ in
-            self?.isExiting = true
-        }
-    }
-
-    /// The overlay lost focus to another app (e.g. Finder) — pull it straight
-    /// back so the child can't escape to the desktop. Skipped once the exit
-    /// chord has fired.
-    private func reclaimFocus() {
-        guard !isExiting else { return }
-        NSApp.activate(ignoringOtherApps: true)
-        if let window = NSApp.windows.first(where: { $0.contentView != nil }) {
-            window.level = .screenSaver
-            window.makeKeyAndOrderFront(nil)
-        }
-        BKLog.log("RECLAIMED focus — re-activated overlay")
     }
 
     /// Wait until SwiftUI has actually created the content window, then lock
@@ -139,6 +140,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         BKLog.log("TERMINATE — app is quitting")
+        // SAFETY: always restore the dock/menu bar on quit, no matter how we got
+        // here (exit chord, Cmd+Q, or system shutdown), so the Mac is never left
+        // in a locked-down presentation state.
+        NSApp.presentationOptions = []
         guard let bar = modalTouchBar else { return }
         let cls: AnyObject = NSTouchBar.self
         for name in ["dismissSystemModalTouchBar:", "dismissSystemModalFunctionBar:"] {
