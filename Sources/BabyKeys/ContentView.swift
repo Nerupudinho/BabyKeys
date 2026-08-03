@@ -22,6 +22,7 @@ class ShapeStore: ObservableObject {
     private var monitor: Any?
     private let escKey: UInt16 = 53
     private let spaceKey: UInt16 = 49
+    private let qKey: UInt16 = 12
 
     func start() {
         monitor = NSEvent.addLocalMonitorForEvents(
@@ -31,6 +32,17 @@ class ShapeStore: ObservableObject {
             guard let self else { return event }
             switch event.type {
             case .keyDown where !event.isARepeat:
+                // PRIMARY EXIT — Cmd+Q. A single deliberate combo an adult can
+                // always do and a baby essentially never will. Instant, no hold.
+                // The app swallows all other keys, so this is handled explicitly
+                // rather than relying on the menu shortcut.
+                if event.modifierFlags.contains(.command) && event.keyCode == self.qKey {
+                    BKLog.log("EXIT via Cmd+Q — quitting app")
+                    self.exitTimer?.invalidate()
+                    NSApp.presentationOptions = []
+                    NSApp.terminate(nil)
+                    return nil
+                }
                 self.heldKeys.insert(event.keyCode)
                 self.checkExit()
                 self.spawnRandom()
@@ -39,7 +51,7 @@ class ShapeStore: ObservableObject {
                 self.heldKeys.remove(event.keyCode)
                 if !(self.heldKeys.contains(self.escKey) && self.heldKeys.contains(self.spaceKey)) {
                     if self.exitTimer != nil {
-                        BKLog.log("EXIT CHORD canceled — key released before 3s hold completed")
+                        BKLog.log("EXIT CHORD canceled — key released before 2s hold completed")
                     }
                     self.exitTimer?.invalidate()
                     self.exitTimer = nil
@@ -59,9 +71,9 @@ class ShapeStore: ObservableObject {
 
     private func checkExit() {
         guard heldKeys.contains(escKey), heldKeys.contains(spaceKey), exitTimer == nil else { return }
-        BKLog.log("EXIT CHORD armed — Esc+Space held, 3s countdown started")
-        exitTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
-            BKLog.log("EXIT CHORD fired — 3s hold completed, quitting app")
+        BKLog.log("EXIT CHORD armed — Esc+Space held, 2s countdown started")
+        exitTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
+            BKLog.log("EXIT CHORD fired — 2s hold completed, quitting app")
             NSApp.presentationOptions = []
             NSApp.terminate(nil)
         }
