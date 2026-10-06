@@ -31,3 +31,7 @@ Hold **ESC + SPACE** together for 3 seconds to gracefully quit. The longer hold 
 ## Stack
 
 Swift 5.9 · SwiftUI · macOS 14+
+
+## Free and open
+
+License: MIT, see LICENSE
