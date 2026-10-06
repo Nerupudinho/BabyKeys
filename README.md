@@ -1,6 +1,6 @@
 # BabyKeys
 
-**A free macOS toy for babies and toddlers.** Open it, hand over the laptop, and every key or click becomes a colorful shape on a blank fullscreen — circles, squares, stars — instead of Mail, Safari, or a half-deleted file.
+**A free macOS toy for babies and toddlers.** Open it, hand over the laptop, and every key or click becomes a colorful shape on a dimmed fullscreen overlay — circles, squares, stars — instead of Mail, Safari, or a half-deleted file.
 
 Built for my toddler, so a baby can mash a MacBook and the grown-up still has a computer afterwards.
 
@@ -10,7 +10,7 @@ Built for my toddler, so a baby can mash a MacBook and the grown-up still has a 
 
 ## What you see
 
-A true fullscreen overlay: dock, menu bar, and window chrome gone. The screen is a dim field. Each keypress or mouse click springs in a soft-edged shape — circles, squares, stars in bright colors — that fades after a moment. Up to 50 shapes at once. That is the whole product.
+A true fullscreen overlay: dock, menu bar, and window chrome gone. Your desktop stays faintly visible behind a dim veil. Each keypress or mouse click springs in a soft-edged shape — circles, squares, stars in bright colors — that fades after a moment. Up to 50 shapes at once. That is the whole product.
 
 ## Features
 
